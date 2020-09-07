@@ -1,13 +1,21 @@
-ARCHS = arm64 arm64e
-TARGET = iphone:clang::13.5
+TARGET := iphone:clang:latest:7.0
+INSTALL_TARGET_PROCESSES = Music
 
-INSTALL_TARGET_PROCESSES = SpringBoard
+DEBUG = 0
+FINALPACKAGE = 1
+GO_EASY_ON_ME = 1
 
 include $(THEOS)/makefiles/common.mk
 
+before-stage::
+	find . -name ".DS\_Store" -delete
+
+after-install::
+	install.exec "sbreload"
+
 TWEAK_NAME = FullPlay
-$(TWEAK_NAME)_FILES = Tweak.x
-$(TWEAK_NAME)_CFLAGS = -fobjc-arc
-$(TWEAK_NAME)_FRAMEWORKS = UIKit
+
+FullPlay_FILES = Tweak.xm
+FullPlay_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/tweak.mk
